@@ -4,8 +4,14 @@ public class Item {
 	private int item_qty; 
 	private String item_name; 
 	private double item_price;
+	// initially set the flag value to False
 	private boolean itemExempted= false;
 	private boolean itemImported= false;
+	/**
+	 * Item class contains the properties for every item in orders
+	 * 
+	 */
+
 	
 	public Item(int qty, String name, double price){
 		this.item_qty = qty;

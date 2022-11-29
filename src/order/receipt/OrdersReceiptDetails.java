@@ -3,6 +3,7 @@
  */
 package order.receipt;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -47,6 +48,7 @@ public class OrdersReceiptDetails {
 		{
 			String item_order = itemStringlist.get(i);
 			// System.out.print(item_order);
+			// spliting string with coma to find different word
 			List<String> item_order_words =  Arrays.asList(item_order.split(" "));
 			int item_qty = Integer.parseInt(item_order_words.get(0));
 			//System.out.println(item_qty);
@@ -54,12 +56,16 @@ public class OrdersReceiptDetails {
 		    double item_price =  Double.parseDouble(item_price_string); 
 			//System.out.println(item_price);
 			String item_name = item_order.replace(item_price_string, "");
+			// Remove the word at from the item string 
+			// another way is to find 2nd last word and remove
 			item_name = item_name.replace(" at", "");
 			// System.out.println(item_name); 
 			Item item_obj = new Item(item_qty, item_name, item_price);
 			if(item_name.contains("imported")) {
+				// find it item is imported or not
 				item_obj.setItemImported(true);
 			}
+			// TODO other keywords can be added to check if excepted 
 			if(item_name.contains("book") || item_name.contains("chocolate") || item_name.contains("pills")) {
 				item_obj.setItemExempted(true);
 			}
@@ -140,16 +146,23 @@ public class OrdersReceiptDetails {
 		return rounded;
 	}
 
-	public List<String> readItemDetails(String input_file_name) throws IOException {
+	public List<String> readItemDetails(String input_file_name)  {
 		// reads from the file and saves result  to string list
 		String fileContent = "";
 		Path fileName= Path.of(input_file_name);
-		fileContent = Files.readString(fileName);
+		try {
+			fileContent = Files.readString(fileName);
+		} catch (IOException e) {
+			
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//System.out.println(fileContent);
 		List<String> itemList = Arrays.asList(fileContent.split("\n"));
 		return itemList;
 		
 	}
+
 
 
 
