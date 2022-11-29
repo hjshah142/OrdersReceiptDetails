@@ -19,34 +19,33 @@ import order.receipt.items.Item;
 public class OrdersReceiptDetails {
 
 	/**
-	 * Class calculates the taxes for the items and prints order summary
+	 * Class find the order summary from the input files,
+	 * calculates the taxes for the items and prints order summary
 	 */
-	double imported_tax_rate = 0.05;
-    double sales_tax_rate = 0.10;
-    private static Double TotalSalesTax= 0.00;
-	private static Double TotalAmount= 0.00;
-	private static ArrayList<Item> ItemsList = new ArrayList<>();
+
+    public  Double TotalSalesTax= 0.00;
+	public  Double TotalAmount= 0.00;
+	private  ArrayList<Item> ItemsList = new ArrayList<>();
+	static double  imported_tax_rate = 0.05;
+	static double sales_tax_rate = 0.10;
 	
-	
-	
+
+
 	public OrdersReceiptDetails() {
+		
+	    
 		
 		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @param args
-	 * @throws IOException 
-	 */
-	public static void main(String[] args) throws IOException {
+
+	
+	public void findOrderSummary(List<String> itemStringlist) {
+
 		
-		// System.out.println("Order Details");
-		String input_file_name = "Input2.txt";
-		List<String> items =  readItemDetails(input_file_name);
-		// System.out.println(items.toString());
-		for(int i=0; i< items.size();i++)
+		for(int i=0; i< itemStringlist.size();i++)
 		{
-			String item_order = items.get(i);
+			String item_order = itemStringlist.get(i);
 			// System.out.print(item_order);
 			List<String> item_order_words =  Arrays.asList(item_order.split(" "));
 			int item_qty = Integer.parseInt(item_order_words.get(0));
@@ -57,10 +56,7 @@ public class OrdersReceiptDetails {
 			String item_name = item_order.replace(item_price_string, "");
 			item_name = item_name.replace(" at", "");
 			// System.out.println(item_name); 
-			Item item_obj; 
-			
-
-			item_obj = new Item(item_qty, item_name, item_price);
+			Item item_obj = new Item(item_qty, item_name, item_price);
 			if(item_name.contains("imported")) {
 				item_obj.setItemImported(true);
 			}
@@ -72,17 +68,15 @@ public class OrdersReceiptDetails {
 
 			
 		}
-		// calculating tax for each items and printing order summary
-		printOrderSummary();
-
-
+		//System.out.println(ItemsList.size());
+		
 	}
-	
 
 
-	private static void printOrderSummary() {
+	public void CalculateOrderSummary() {
+		// calculate sales taxes and total bill amount 
 
-		// TODO Auto-generated method stub
+
         for (Item item : ItemsList) {
         	    	
         	
@@ -98,21 +92,26 @@ public class OrdersReceiptDetails {
         	//TotalSalesTax = roundDoubleValue(TotalSalesTax);
         	TotalAmount = itemCostwithTax + TotalAmount;
         	
-        	System.out.printf("%s: %.2f  \n",item.getItem_name(), item.getItem_price());
-
         }
-        System.out.printf("Sales Taxes: %f",TotalSalesTax);
-        System.out.printf("\nTotal: %.2f",TotalAmount);
+        
+        
 	
+	}
+	public void printOrderSummary(){
+		
+        for (Item item : ItemsList) {      	 
+        	
+        	System.out.printf("%s: %.2f  \n",item.getItem_name(), item.getItem_price());
+        }
+        System.out.printf("Sales Taxes: %.2f",TotalSalesTax);
+        System.out.printf("\nTotal: %.2f\n",TotalAmount);
+		
 	}
 	
 
 
-	
-
 	private static double calculateTax(Item item) {
 		
-		// TODO Auto-generated method stub
 		double salesTax = 0.00;
     	double importDuty = 0.00;
        	double item_price = item.getItem_price();
@@ -121,12 +120,12 @@ public class OrdersReceiptDetails {
     	item.setItem_price(item_cost);
     	
     	if(!item.isItemExempted()) {
-    		salesTax = item_cost * 0.10;
+    		salesTax = item_cost * sales_tax_rate;
     		//salesTax = roundDoubleValue(salesTax);
     		
     	}
     	if(item.isItemImported()) {
-    		importDuty = item_cost *0.05;
+			importDuty = item_cost * imported_tax_rate ;
     		//importDuty = roundDoubleValue(importDuty);
     	}
     	double itemTax = salesTax + importDuty;
@@ -137,18 +136,23 @@ public class OrdersReceiptDetails {
 
 	private static double roundDoubleValue(double value) {
 		// TODO Auto-generated method stub
-		double rounded = Math.round(value * 20.0) / 20.0;
+		double rounded = Math.round(value * 20.00) / 20.0;
 		return rounded;
 	}
 
-	private static List<String> readItemDetails(String input_file_name) throws IOException {
-		// TODO Auto-generated method stub
-		Path fileName= Path.of("OrderData/Input3.txt");
-		String fileContent = Files.readString(fileName);
+	public List<String> readItemDetails(String input_file_name) throws IOException {
+		// reads from the file and saves result  to string list
+		String fileContent = "";
+		Path fileName= Path.of(input_file_name);
+		fileContent = Files.readString(fileName);
 		//System.out.println(fileContent);
-		List<String> items = Arrays.asList(fileContent.split("\n"));
-		return items;
+		List<String> itemList = Arrays.asList(fileContent.split("\n"));
+		return itemList;
 		
 	}
+
+
+
+
 
 }
