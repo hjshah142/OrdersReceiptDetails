@@ -3,7 +3,6 @@
  */
 package order.receipt;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +47,7 @@ public class OrdersReceiptDetails {
 		{
 			String item_order = itemStringlist.get(i);
 			// System.out.print(item_order);
-			// spliting string with coma to find different word
+			// splitting of string with coma to find different word
 			List<String> item_order_words =  Arrays.asList(item_order.split(" "));
 			int item_qty = Integer.parseInt(item_order_words.get(0));
 			//System.out.println(item_qty);
@@ -142,7 +141,7 @@ public class OrdersReceiptDetails {
 
 	private static double roundDoubleValue(double value) {
 		// TODO Auto-generated method stub
-		double rounded = Math.round(value * 20.00) / 20.0;
+		double rounded = Math.ceil((value * 20.00)) / 20.0;
 		return rounded;
 	}
 

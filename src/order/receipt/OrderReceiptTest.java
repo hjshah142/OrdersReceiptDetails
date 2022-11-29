@@ -45,8 +45,8 @@ class OrderReceiptTest	 {
 		TestOrder3.findOrderSummary(item_list);
 		TestOrder3.CalculateOrderSummary();
 	
-        assertEquals(TestOrder3.TotalSalesTax, 6.70,0.05);
-        assertEquals(TestOrder3.TotalAmount, 74.68,0.05);
+        assertEquals(TestOrder3.TotalSalesTax, 6.70,0.005);
+        assertEquals(TestOrder3.TotalAmount, 74.68,0.005);
 		
 		
 	}
