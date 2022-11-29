@@ -31,14 +31,6 @@ public class OrdersReceiptDetails {
 	
 
 
-	public OrdersReceiptDetails() {
-		
-	    
-		
-		// TODO Auto-generated constructor stub
-	}
-
-
 	
 	public void findOrderSummary(List<String> itemStringlist) {
 
@@ -68,14 +60,34 @@ public class OrdersReceiptDetails {
 			if(item_name.contains("book") || item_name.contains("chocolate") || item_name.contains("pills")) {
 				item_obj.setItemExempted(true);
 			}
+			else {
+				findItemCatogory(item_name, item_obj);
+			}
 
 			ItemsList.add(item_obj);
 
 			
 		}
-		//System.out.println(ItemsList.size());
+
 		
 	}
+
+
+	private void findItemCatogory(String item_name, Item item_obj) {
+		
+		// TODO more keyword can be can be added
+		String[] excemptedCatogryKeyword = {"eye drops", "milk", "mask"};
+		for(String keywords : excemptedCatogryKeyword ) {
+			if(item_name.contains(keywords)) {
+				item_obj.setItemExempted(true);
+				
+			}
+			
+			
+		}
+		
+	}
+
 
 
 	public void CalculateOrderSummary() {
